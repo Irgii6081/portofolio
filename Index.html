@@ -1,0 +1,1243 @@
+
+<!DOCTYPE html>
+<html lang="id" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irgi Achmad Fahrezy — Portfolio Interaktif</title>
+
+    <!-- Font Awesome 6 Free Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', '-apple-system', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#3B82F6',
+                            indigo: '#6366F1',
+                            purple: '#8B5CF6',
+                            pink: '#EC4899',
+                            emerald: '#10B981',
+                        }
+                    },
+                    borderRadius: {
+                        'glass-2xl': '32px',
+                        'glass-xl': '24px',
+                        'glass-lg': '18px',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Reset & Mobile Tap Fix */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030712;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #8b5cf6, #ec4899);
+        }
+
+        /* Ambient Fluid Blobs Animation */
+        @keyframes floatBlob1 {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate3d(40px, -30px, 0) scale(1.1) rotate(120deg); }
+            66% { transform: translate3d(-20px, 40px, 0) scale(0.95) rotate(240deg); }
+        }
+        @keyframes floatBlob2 {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+            50% { transform: translate3d(-40px, 40px, 0) scale(1.1); }
+        }
+
+        .blob-1 { animation: floatBlob1 20s ease-in-out infinite; will-change: transform; }
+        .blob-2 { animation: floatBlob2 25s ease-in-out infinite alternate; will-change: transform; }
+
+        /* Glassmorphism Card Styling */
+        .glass-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.035);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Mobile Active Bounce Effect */
+        .glass-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 25px 50px rgba(99, 102, 241, 0.2);
+        }
+        .glass-card:active {
+            transform: scale(0.98);
+        }
+
+        /* Rotating Conic Gradient Neon Border Beams */
+        .neon-border-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .neon-border-card::after {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                #6366f1 90deg,
+                #a855f7 180deg,
+                #10b981 270deg,
+                transparent 360deg
+            );
+            animation: spinBeam 6s linear infinite;
+            z-index: -2;
+            opacity: 0.55;
+        }
+        .neon-border-card::before {
+            content: '';
+            position: absolute;
+            inset: 1.5px;
+            background: #090d16;
+            border-radius: inherit;
+            z-index: -1;
+        }
+
+        @keyframes spinBeam {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Floating Badge Animation */
+        @keyframes floatBadge {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .float-badge { animation: floatBadge 4s ease-in-out infinite; }
+
+        /* Liquid Skill Bar Progress Shimmer */
+        .skill-meter-bar {
+            position: relative;
+            overflow: hidden;
+        }
+        .skill-meter-bar::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: translateX(-100%);
+            animation: waveShimmer 2.5s infinite;
+        }
+        @keyframes waveShimmer {
+            100% { transform: translateX(100%); }
+        }
+
+        /* Typewriter Cursor */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 0.75s infinite;
+            color: #10B981;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Scroll Reveal Transitions */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-element.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Touch Button Active Effects */
+        .btn-touch {
+            transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+        .btn-touch:active {
+            transform: scale(0.95);
+        }
+
+        /* Gradient Shimmer Text */
+        .text-shimmer {
+            background: linear-gradient(135deg, #60A5FA 0%, #C084FC 50%, #34D399 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShimmerAnim 6s linear infinite;
+        }
+        @keyframes textShimmerAnim {
+            to { background-position: 200% center; }
+        }
+
+        /* Modal Transitions */
+        #project-modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #project-modal-content {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+        }
+        #project-modal.active #project-modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-[#030712] text-slate-100 font-sans antialiased overflow-x-hidden relative min-h-screen">
+
+    <!-- TOP SCROLL PROGRESS INDICATOR -->
+    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-400 z-50 transition-all duration-150 w-0"></div>
+
+    <!-- INTRO REVEAL SPLASH SCREEN -->
+    <div id="intro-screen" class="fixed inset-0 z-50 bg-[#030712] flex flex-col items-center justify-center p-4 transition-all duration-700">
+        <div class="relative flex flex-col items-center max-w-sm w-full text-center space-y-6">
+            <div class="relative w-24 h-24 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-full border-2 border-indigo-500/30 animate-ping"></div>
+                <div class="absolute inset-2 rounded-full border-2 border-purple-500/50 animate-spin" style="animation-duration: 4s;"></div>
+                <div class="w-14 h-14 rounded-full bg-gradient-to-tr from-indigo-600 via-purple-600 to-emerald-400 flex items-center justify-center font-black text-lg text-white shadow-xl shadow-indigo-500/50">
+                    IA
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <h2 class="text-lg font-bold tracking-tight text-white">Irgi Achmad Fahrezy</h2>
+                <p class="text-xs text-slate-400 font-mono">Memuat Portofolio Interaktif...</p>
+            </div>
+
+            <div class="w-full space-y-2">
+                <div class="flex items-center justify-between text-xs font-mono font-bold text-slate-300">
+                    <span>SYSTEM_INIT</span>
+                    <span id="intro-percent" class="text-emerald-400">0%</span>
+                </div>
+                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden p-0.5">
+                    <div id="intro-bar" class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-400 rounded-full transition-all duration-100 w-0"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2D INTERACTIVE CANVAS BACKGROUND -->
+    <canvas id="particle-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- AMBIENT GLOW BLOBS -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="blob-1 absolute top-[-10%] left-[15%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[140px]"></div>
+        <div class="blob-2 absolute top-[45%] right-[-5%] w-[450px] h-[450px] bg-purple-600/18 rounded-full blur-[130px]"></div>
+        <div class="blob-1 absolute bottom-[-5%] left-[25%] w-[480px] h-[480px] bg-emerald-600/15 rounded-full blur-[150px]"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff04_1px,transparent_1px),linear-gradient(to_bottom,#ffffff04_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container" class="fixed top-20 inset-x-0 z-50 flex flex-col items-center gap-2 pointer-events-none px-4"></div>
+
+    <!-- CLEAN iOS FLOATING NAVBAR WITH RESPONSIVE MOBILE HAMBURGER MENU -->
+    <header class="fixed top-4 inset-x-0 z-40 flex justify-center px-4">
+        <nav id="header-nav" class="glass-card px-4 sm:px-6 py-2.5 rounded-full flex items-center justify-between gap-4 max-w-xl w-full bg-slate-950/80 border-white/10 shadow-2xl transition-all duration-300 relative">
+            <!-- Brand Badge -->
+            <a href="#hero" class="flex items-center gap-2.5 font-bold text-sm text-white hover:opacity-80 transition-opacity">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-emerald-400 flex items-center justify-center text-white text-xs font-black shadow-md shadow-indigo-500/30">
+                    IA
+                </div>
+                <span class="font-bold tracking-tight text-white">Irgi Achmad</span>
+            </a>
+
+            <!-- Desktop Navigational Links -->
+            <div class="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-300">
+                <a href="#about" class="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/10 transition-all">Tentang</a>
+                <a href="#skills" class="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/10 transition-all">Keahlian</a>
+                <a href="#projects" class="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/10 transition-all">Proyek</a>
+                <a href="#contact" class="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/10 transition-all">Kontak</a>
+            </div>
+
+            <!-- Mobile Hamburger Toggle Button -->
+            <button id="mobile-menu-btn" class="sm:hidden w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all focus:outline-none btn-touch">
+                <i id="mobile-menu-icon" class="fa-solid fa-bars text-sm"></i>
+            </button>
+
+            <!-- Mobile Dropdown Glass Menu -->
+            <div id="mobile-menu" class="sm:hidden absolute top-14 left-0 right-0 glass-card p-3 rounded-2xl bg-slate-950/95 border-white/15 flex flex-col gap-1 text-xs font-semibold text-slate-200 shadow-2xl transition-all duration-300 opacity-0 invisible -translate-y-2">
+                <a href="#about" class="mobile-nav-link px-4 py-2.5 rounded-xl hover:bg-white/10 flex items-center gap-3 active:bg-indigo-600/30">
+                    <i class="fa-solid fa-user-check text-indigo-400 w-4"></i> Tentang Saya
+                </a>
+                <a href="#skills" class="mobile-nav-link px-4 py-2.5 rounded-xl hover:bg-white/10 flex items-center gap-3 active:bg-purple-600/30">
+                    <i class="fa-solid fa-code text-purple-400 w-4"></i> Keahlian
+                </a>
+                <a href="#projects" class="mobile-nav-link px-4 py-2.5 rounded-xl hover:bg-white/10 flex items-center gap-3 active:bg-emerald-600/30">
+                    <i class="fa-solid fa-layer-group text-emerald-400 w-4"></i> Hasil Karya
+                </a>
+                <a href="#contact" class="mobile-nav-link px-4 py-2.5 rounded-xl hover:bg-white/10 flex items-center gap-3 active:bg-pink-600/30">
+                    <i class="fa-solid fa-paper-plane text-pink-400 w-4"></i> Kontak
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN PORTFOLIO -->
+    <main class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 pt-32 pb-24 space-y-32">
+
+        <!-- 1. HERO SECTION -->
+        <section id="hero" class="min-h-[75vh] flex flex-col justify-center items-start relative">
+            
+            <!-- Floating Background Tech Badges -->
+            <div class="absolute right-0 top-10 hidden md:flex flex-col gap-3 pointer-events-none z-0">
+                <div class="float-badge glass-card px-4 py-2 rounded-full text-xs font-mono font-bold text-indigo-300 border-indigo-500/30 flex items-center gap-2.5 shadow-xl">
+                    <i class="fa-solid fa-code text-indigo-400"></i>
+                    <span>HTML5 & CSS3</span>
+                </div>
+                <div class="float-badge glass-card px-4 py-2 rounded-full text-xs font-mono font-bold text-purple-300 border-purple-500/30 flex items-center gap-2.5 shadow-xl ml-8" style="animation-delay: 0.6s;">
+                    <i class="fa-solid fa-microchip text-purple-400"></i>
+                    <span>AI-Assisted Dev</span>
+                </div>
+                <div class="float-badge glass-card px-4 py-2 rounded-full text-xs font-mono font-bold text-emerald-300 border-emerald-500/30 flex items-center gap-2.5 shadow-xl ml-4" style="animation-delay: 1.2s;">
+                    <i class="fa-solid fa-database text-emerald-400"></i>
+                    <span>PHP & MySQL</span>
+                </div>
+            </div>
+
+            <!-- Status Badge -->
+            <div class="reveal-element inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-xs font-semibold text-emerald-400 mb-6 border-emerald-500/30">
+                <span class="relative flex h-2.5 w-2.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <span>Terbuka untuk Projek Web Development</span>
+            </div>
+
+            <!-- Primary Name Heading -->
+            <h1 class="reveal-element text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-[1.1] mb-4">
+                Irgi Achmad <br class="hidden sm:inline">
+                <span class="text-shimmer">Fahrezy</span>
+            </h1>
+
+            <!-- Dynamic Typer Subtitle -->
+            <div class="reveal-element text-lg sm:text-2xl font-bold text-slate-300 mb-6 flex items-center gap-2">
+                <span class="text-slate-400 font-normal">Fokus:</span>
+                <span id="hero-role-text" class="text-emerald-400 font-mono typing-cursor"></span>
+            </div>
+
+            <!-- Location & Education Badges -->
+            <div class="reveal-element flex flex-wrap items-center gap-2.5 text-xs font-medium text-slate-300 mb-8">
+                <span class="px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 flex items-center gap-2">
+                    <i class="fa-solid fa-location-dot text-indigo-400"></i>
+                    Tarakan, Kalimantan Utara
+                </span>
+                <span class="px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap text-purple-400"></i>
+                    SMKN 4 Tarakan (RPL)
+                </span>
+            </div>
+
+            <!-- Bio Description -->
+            <p class="reveal-element text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed mb-10">
+                Pengembang web lulusan Rekayasa Perangkat Lunak (RPL) yang berfokus membangun aplikasi web interaktif, responsif, dan mengintegrasikan alur kerja AI modern untuk solusi perangkat lunak yang efisien.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="reveal-element flex flex-wrap items-center gap-4 mb-14">
+                <a href="#projects" class="btn-touch px-7 py-3.5 rounded-glass-lg bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-500 hover:from-indigo-500 hover:to-emerald-400 text-white font-bold text-xs sm:text-sm shadow-xl shadow-indigo-600/30 flex items-center gap-2.5">
+                    <i class="fa-solid fa-layer-group"></i>
+                    Lihat Proyek Saya
+                </a>
+
+                <a href="#contact" class="btn-touch px-7 py-3.5 rounded-glass-lg glass-card hover:bg-white/10 text-white font-bold text-xs sm:text-sm flex items-center gap-2.5">
+                    <i class="fa-solid fa-envelope text-emerald-400"></i>
+                    Hubungi Saya
+                </a>
+            </div>
+
+            <!-- Animated Stat Counters -->
+            <div class="reveal-element w-full grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-white/10">
+                <div class="glass-card p-4 rounded-glass-lg text-center space-y-1">
+                    <div class="text-2xl sm:text-3xl font-black text-indigo-400 font-mono flex justify-center items-center">
+                        <span class="stat-counter" data-target="2">0</span>+
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-medium">Proyek Utama</div>
+                </div>
+
+                <div class="glass-card p-4 rounded-glass-lg text-center space-y-1">
+                    <div class="text-2xl sm:text-3xl font-black text-purple-400 font-mono flex justify-center items-center">
+                        <span class="stat-counter" data-target="8">0</span>+
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-medium">Tech & Tools</div>
+                </div>
+
+                <div class="glass-card p-4 rounded-glass-lg text-center space-y-1">
+                    <div class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono flex justify-center items-center">
+                        <span class="stat-counter" data-target="100">0</span>%
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-medium">Komitmen Belajar</div>
+                </div>
+
+                <div class="glass-card p-4 rounded-glass-lg text-center space-y-1">
+                    <div class="text-2xl sm:text-3xl font-black text-pink-400 font-mono flex justify-center items-center">
+                        <span class="stat-counter" data-target="2026">0</span>
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-medium">Tahun Aktif</div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 2. ABOUT & EXPERIENCE SECTION -->
+        <section id="about" class="scroll-mt-28">
+            <div class="reveal-element flex items-center gap-3 mb-8">
+                <div class="p-3 rounded-glass-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                    <i class="fa-solid fa-user-check text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white">Latar Belakang & Pengalaman</h2>
+                    <p class="text-xs text-slate-400 font-mono">Pendidikan formal & aktivitas profesional</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Education Card -->
+                <div class="reveal-element glass-card neon-border-card p-6 rounded-glass-2xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2.5 text-indigo-400">
+                            <i class="fa-solid fa-graduation-cap text-lg"></i>
+                            <h3 class="font-bold text-white text-base">Pendidikan Formal</h3>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-mono font-bold">RPL</span>
+                    </div>
+
+                    <div class="space-y-1">
+                        <h4 class="text-base font-extrabold text-slate-100">SMKN 4 Tarakan</h4>
+                        <p class="text-xs text-indigo-300 font-mono">Jurusan Rekayasa Perangkat Lunak</p>
+                    </div>
+
+                    <p class="text-xs text-slate-300 leading-relaxed pt-1">
+                        Memiliki fondasi kuat dalam rekayasa perangkat lunak, mencakup perancangan struktur data, algoritma dasar, sintaks pemrograman web, serta analisis logika aplikasi.
+                    </p>
+                </div>
+
+                <!-- Experience Card -->
+                <div class="reveal-element glass-card neon-border-card p-6 rounded-glass-2xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2.5 text-emerald-400">
+                            <i class="fa-solid fa-briefcase text-lg"></i>
+                            <h3 class="font-bold text-white text-base">Aktivitas & Pengalaman</h3>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold">Operasional</span>
+                    </div>
+
+                    <div class="space-y-1">
+                        <h4 class="text-base font-extrabold text-slate-100">Tim Operasional & Pengembangan Mandiri</h4>
+                        <p class="text-xs text-emerald-300 font-mono">SPPG Pamusian 4 Tarakan</p>
+                    </div>
+
+                    <p class="text-xs text-slate-300 leading-relaxed pt-1">
+                        Aktif menjalankan tugas operasional harian di SPPG Pamusian 4 Tarakan, sekaligus terus mengasah keterampilan di bidang IT & Web Development secara mandiri melalui eksplorasi AI tools dan eksperimen proyek web.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 3. SKILLS SECTION -->
+        <section id="skills" class="scroll-mt-28">
+            <div class="reveal-element flex items-center gap-3 mb-8">
+                <div class="p-3 rounded-glass-lg bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                    <i class="fa-solid fa-code text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white">Keahlian & Penguasaan Tools</h2>
+                    <p class="text-xs text-slate-400 font-mono">Penguasaan teknologi & lingkungan kerja</p>
+                </div>
+            </div>
+
+            <!-- Progress Meters Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- HTML5 & CSS3 -->
+                <div class="reveal-element glass-card p-5 rounded-glass-xl space-y-2.5">
+                    <div class="flex justify-between items-center text-xs font-bold">
+                        <span class="text-white flex items-center gap-2">
+                            <i class="fa-brands fa-html5 text-indigo-400 text-sm"></i>
+                            HTML5 & CSS3 (Layout & Styling)
+                        </span>
+                        <span class="text-indigo-400 font-mono">88%</span>
+                    </div>
+                    <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden p-0.5">
+                        <div class="skill-meter-bar h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-1000 w-0" data-width="88%"></div>
+                    </div>
+                </div>
+
+                <!-- JavaScript -->
+                <div class="reveal-element glass-card p-5 rounded-glass-xl space-y-2.5">
+                    <div class="flex justify-between items-center text-xs font-bold">
+                        <span class="text-white flex items-center gap-2">
+                            <i class="fa-brands fa-js text-purple-400 text-sm"></i>
+                            JavaScript (DOM & Interactivity)
+                        </span>
+                        <span class="text-purple-400 font-mono">80%</span>
+                    </div>
+                    <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden p-0.5">
+                        <div class="skill-meter-bar h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-1000 w-0" data-width="80%"></div>
+                    </div>
+                </div>
+
+                <!-- PHP & MySQL -->
+                <div class="reveal-element glass-card p-5 rounded-glass-xl space-y-2.5">
+                    <div class="flex justify-between items-center text-xs font-bold">
+                        <span class="text-white flex items-center gap-2">
+                            <i class="fa-solid fa-database text-emerald-400 text-sm"></i>
+                            PHP & MySQL (Backend & Database)
+                        </span>
+                        <span class="text-emerald-400 font-mono">75%</span>
+                    </div>
+                    <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden p-0.5">
+                        <div class="skill-meter-bar h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-1000 w-0" data-width="75%"></div>
+                    </div>
+                </div>
+
+                <!-- Git & Termux -->
+                <div class="reveal-element glass-card p-5 rounded-glass-xl space-y-2.5">
+                    <div class="flex justify-between items-center text-xs font-bold">
+                        <span class="text-white flex items-center gap-2">
+                            <i class="fa-solid fa-terminal text-pink-400 text-sm"></i>
+                            Git, GitHub & Deployment
+                        </span>
+                        <span class="text-pink-400 font-mono">82%</span>
+                    </div>
+                    <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden p-0.5">
+                        <div class="skill-meter-bar h-full bg-gradient-to-r from-pink-500 to-indigo-500 rounded-full transition-all duration-1000 w-0" data-width="82%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tech Badges Pill List -->
+            <div class="reveal-element flex flex-wrap gap-2.5 justify-center">
+                <span class="px-4 py-2 rounded-full glass-card text-xs font-semibold text-slate-200 flex items-center gap-2">
+                    <i class="fa-brands fa-html5 text-indigo-400"></i> HTML5
+                </span>
+                <span class="px-4 py-2 rounded-full glass-card text-xs font-semibold text-slate-200 flex items-center gap-2">
+                    <i class="fa-brands fa-css3-alt text-indigo-400"></i> CSS3
+                </span>
+                <span class="px-4 py-2 rounded-full glass-card text-xs font-semibold text-slate-200 flex items-center gap-2">
+                    <i class="fa-brands fa-js text-purple-400"></i> JavaScript
+                </span>
+                <span class="px-4 py-2 rounded-full glass-card text-xs font-semibold text-slate-200 flex items-center gap-2">
+                    <i class="fa-brands fa-php text-purple-400"></i> PHP
+                </span>
+                <span class="px-4 py-2 rounded-full glass-card text-xs font-semibold text-slate-200 flex items-center gap-2">
+                    <i class="fa-solid fa-database text-emerald-400"></i> MySQL
+                </span>
+                <span class="px-4 py-2 rounded-full glass-card text-xs font-semibold text-slate-200 flex items-center gap-2">
+                    <i class="fa-brands fa-github text-emerald-400"></i> Git & GitHub
+                </span>
+                <span class="px-4 py-2 rounded-full glass-card text-xs font-semibold text-slate-200 flex items-center gap-2">
+                    <i class="fa-solid fa-terminal text-pink-400"></i> Termux CLI
+                </span>
+                <span class="px-4 py-2 rounded-full glass-card text-xs font-semibold text-slate-200 flex items-center gap-2">
+                    <i class="fa-solid fa-cloud text-pink-400"></i> InfinityFree Hosting
+                </span>
+            </div>
+        </section>
+
+
+        <!-- 4. PROJECTS SECTION WITH FILTER & MODAL -->
+        <section id="projects" class="scroll-mt-28">
+            <div class="reveal-element flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                <div class="flex items-center gap-3">
+                    <div class="p-3 rounded-glass-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <i class="fa-solid fa-layer-group text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-black text-white">Hasil Karya & Proyek</h2>
+                        <p class="text-xs text-slate-400 font-mono">Daftar aplikasi web yang siap dicoba</p>
+                    </div>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex items-center gap-2 bg-white/5 p-1.5 rounded-full border border-white/10 text-xs font-bold">
+                    <button class="project-filter-btn px-4 py-1.5 rounded-full bg-indigo-600 text-white transition-all" data-filter="all">Semua</button>
+                    <button class="project-filter-btn px-4 py-1.5 rounded-full text-slate-400 hover:text-white transition-all" data-filter="webapp">Web App</button>
+                    <button class="project-filter-btn px-4 py-1.5 rounded-full text-slate-400 hover:text-white transition-all" data-filter="tool">Tool</button>
+                </div>
+            </div>
+
+            <!-- Project Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Project 1: SecureVault -->
+                <div class="project-card reveal-element glass-card neon-border-card p-6 rounded-glass-2xl flex flex-col justify-between space-y-5" data-category="webapp">
+                    <div class="space-y-3.5">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-[11px] font-mono font-bold border border-indigo-500/30">
+                                Cloud Document Storage
+                            </span>
+                            <i class="fa-solid fa-shield-halved text-indigo-400 text-lg"></i>
+                        </div>
+
+                        <h3 class="text-xl font-black text-white">SecureVault - Document Storage</h3>
+
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Sistem repose berkas dokumen digital berbasis web dengan proteksi penyimpanan aman, pengorganisasian berkas, dan integrasi database MySQL.
+                        </p>
+
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-[11px] font-mono text-slate-300">PHP</span>
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-[11px] font-mono text-slate-300">MySQL</span>
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-[11px] font-mono text-slate-300">HTML5</span>
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-[11px] font-mono text-slate-300">CSS3</span>
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-[11px] font-mono text-slate-300">JavaScript</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between gap-2">
+                        <button class="btn-touch open-modal-btn px-3.5 py-2 rounded-glass-lg bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-semibold flex items-center gap-2"
+                            data-title="SecureVault - Document Storage"
+                            data-desc="SecureVault adalah aplikasi web repositori dokumen digital berbasis cloud. Dirancang untuk mengelola dan menyimpan dokumen secara terorganisir dengan arsitektur backend PHP dan database MySQL."
+                            data-tech="PHP, MySQL, HTML5, CSS3, JavaScript"
+                            data-url="https://securevault.fwh.is/">
+                            <i class="fa-solid fa-circle-info text-indigo-400"></i>
+                            <span>Detail</span>
+                        </button>
+
+                        <a href="https://securevault.fwh.is/" target="_blank" rel="noopener noreferrer" class="btn-touch px-4 py-2 rounded-glass-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-indigo-600/30">
+                            <span>Buka Website</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 2: Rezyyxy Downloader -->
+                <div class="project-card reveal-element glass-card neon-border-card p-6 rounded-glass-2xl flex flex-col justify-between space-y-5" data-category="tool">
+                    <div class="space-y-3.5">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-[11px] font-mono font-bold border border-purple-500/30">
+                                Interactive Media Tool
+                            </span>
+                            <i class="fa-solid fa-download text-purple-400 text-lg"></i>
+                        </div>
+
+                        <h3 class="text-xl font-black text-white">Rezyyxy Downloader</h3>
+
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Web tool interaktif untuk mengunduh konten media TikTok dengan antarmuka yang modern, cepat, dan sepenuhnya responsif di semua ukuran layar.
+                        </p>
+
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-[11px] font-mono text-slate-300">HTML5</span>
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-[11px] font-mono text-slate-300">CSS3</span>
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-[11px] font-mono text-slate-300">JavaScript</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between gap-2">
+                        <button class="btn-touch open-modal-btn px-3.5 py-2 rounded-glass-lg bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-semibold flex items-center gap-2"
+                            data-title="Rezyyxy Downloader"
+                            data-desc="Rezyyxy Downloader adalah platform pengunduh media TikTok yang ringan dan efisien. Dibuat menggunakan JavaScript murni dan CSS3 untuk memastikan kecepatan muat serta antarmuka intuitif."
+                            data-tech="HTML5, CSS3, JavaScript"
+                            data-url="https://irgii6081.github.io/tiktok-downloader-rezyyxyy/">
+                            <i class="fa-solid fa-circle-info text-purple-400"></i>
+                            <span>Detail</span>
+                        </button>
+
+                        <a href="https://irgii6081.github.io/tiktok-downloader-rezyyxyy/" target="_blank" rel="noopener noreferrer" class="btn-touch px-4 py-2 rounded-glass-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-purple-600/30">
+                            <span>Buka Website</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- 5. CONTACT SECTION -->
+        <section id="contact" class="scroll-mt-28">
+            <div class="reveal-element flex items-center gap-3 mb-8">
+                <div class="p-3 rounded-glass-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                    <i class="fa-solid fa-paper-plane text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white">Hubungi Saya</h2>
+                    <p class="text-xs text-slate-400 font-mono">Mari berdiskusi atau berkolaborasi</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Direct Contacts -->
+                <div class="reveal-element glass-card p-6 rounded-glass-2xl space-y-5 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2">Kontak Langsung</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                            Gunakan tombol interaktif di bawah untuk menyalin email atau menghubungi saya langsung melalui WhatsApp & GitHub.
+                        </p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <!-- Copy Email Button -->
+                        <button id="copy-email-btn" class="w-full flex items-center justify-between p-3.5 rounded-glass-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-200 transition-all text-left group btn-touch">
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-envelope text-indigo-400 text-base"></i>
+                                <span class="font-mono">irgii6081@gmail.com</span>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-mono group-hover:bg-indigo-500 group-hover:text-white transition-all">Copy</span>
+                        </button>
+
+                        <!-- WhatsApp Link -->
+                        <a href="https://wa.me/6289630417710" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3.5 rounded-glass-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-200 transition-all btn-touch">
+                            <div class="flex items-center gap-3">
+                                <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i>
+                                <span>WhatsApp (089630417710)</span>
+                            </div>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500"></i>
+                        </a>
+
+                        <!-- GitHub Link -->
+                        <a href="https://github.com/Irgii6081" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3.5 rounded-glass-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-200 transition-all btn-touch">
+                            <div class="flex items-center gap-3">
+                                <i class="fa-brands fa-github text-purple-400 text-lg"></i>
+                                <span>GitHub (@Irgii6081)</span>
+                            </div>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Contact Message Form -->
+                <div class="reveal-element">
+                    <form id="contact-form" class="glass-card p-6 rounded-glass-2xl space-y-4">
+                        <div>
+                            <label for="form-name" class="block text-xs font-bold text-slate-300 mb-1.5">Nama Lengkap</label>
+                            <input type="text" id="form-name" required placeholder="Masukkan nama Anda" class="w-full bg-slate-950/80 border border-white/10 rounded-glass-lg px-4 py-3 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                        </div>
+
+                        <div>
+                            <label for="form-email" class="block text-xs font-bold text-slate-300 mb-1.5">Email Anda</label>
+                            <input type="email" id="form-email" required placeholder="email@domain.com" class="w-full bg-slate-950/80 border border-white/10 rounded-glass-lg px-4 py-3 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                        </div>
+
+                        <div>
+                            <label for="form-message" class="block text-xs font-bold text-slate-300 mb-1.5">Pesan / Diskusi Proyek</label>
+                            <textarea id="form-message" rows="3" required placeholder="Tuliskan pesan Anda..." class="w-full bg-slate-950/80 border border-white/10 rounded-glass-lg px-4 py-3 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-touch w-full py-3.5 rounded-glass-lg bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-500 hover:from-indigo-500 hover:to-emerald-400 text-white font-bold text-xs shadow-xl shadow-indigo-600/30 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Kirim Pesan
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PROJECT DETAIL MODAL -->
+    <div id="project-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md opacity-0 invisible pointer-events-none">
+        <div id="project-modal-content" class="glass-card max-w-lg w-full p-6 sm:p-8 rounded-glass-2xl space-y-5 border-white/20 transform scale-90 opacity-0 bg-slate-900/90 shadow-2xl relative">
+            <button id="close-modal-btn" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="space-y-2">
+                <span class="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-mono font-bold">INFO PROYEK</span>
+                <h3 id="modal-title" class="text-2xl font-black text-white">Title</h3>
+            </div>
+
+            <p id="modal-desc" class="text-xs sm:text-sm text-slate-300 leading-relaxed">Description</p>
+
+            <div class="space-y-1.5">
+                <span class="text-[11px] font-mono text-slate-400 block font-bold">TEKNOLOGI DIGUNAKAN:</span>
+                <p id="modal-tech" class="text-xs font-mono text-emerald-400 bg-white/5 p-2.5 rounded-lg border border-white/10">Tech</p>
+            </div>
+
+            <div class="pt-2 flex justify-end">
+                <a id="modal-url" href="#" target="_blank" rel="noopener noreferrer" class="btn-touch px-5 py-2.5 rounded-glass-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-2 shadow-lg">
+                    <span>Kunjungi Website Live</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 border-t border-white/10 bg-slate-950/90 backdrop-blur-md py-8">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-medium">
+            <p>&copy; 2026 Irgi Achmad Fahrezy. All rights reserved.</p>
+            <a href="#hero" class="hover:text-indigo-400 transition-colors flex items-center gap-2 font-bold">
+                <span>Kembali Ke Atas</span>
+                <i class="fa-solid fa-arrow-up"></i>
+            </a>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 1. Intro Screen Loader
+            const introPercent = document.getElementById('intro-percent');
+            const introBar = document.getElementById('intro-bar');
+            const introScreen = document.getElementById('intro-screen');
+            let loadProgress = 0;
+
+            function dismissIntro() {
+                if (introScreen && !introScreen.classList.contains('opacity-0')) {
+                    introScreen.classList.add('opacity-0', 'pointer-events-none', 'scale-105');
+                    setTimeout(() => introScreen.remove(), 700);
+                }
+            }
+
+            const loadInterval = setInterval(() => {
+                loadProgress += Math.floor(Math.random() * 18) + 14;
+                if (loadProgress >= 100) {
+                    loadProgress = 100;
+                    clearInterval(loadInterval);
+                    if (introPercent) introPercent.textContent = '100%';
+                    if (introBar) introBar.style.width = '100%';
+                    setTimeout(dismissIntro, 250);
+                } else {
+                    if (introPercent) introPercent.textContent = `${loadProgress}%`;
+                    if (introBar) introBar.style.width = `${loadProgress}%`;
+                }
+            }, 30);
+
+            // Backup timer pengaman
+            setTimeout(dismissIntro, 1500);
+
+            // 2. Scroll Progress Bar
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = (scrollTop / docHeight) * 100;
+                const progressBar = document.getElementById('scroll-progress');
+                if (progressBar) progressBar.style.width = `${scrolled}%`;
+            });
+
+            // 3. 2D Canvas Background + Interactive Tap Shockwave & Particle Burst
+            const canvas = document.getElementById('particle-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                let particles = [];
+                let shockwaves = [];
+                let burstParticles = [];
+
+                function resizeCanvas() {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
+                }
+                window.addEventListener('resize', resizeCanvas);
+                resizeCanvas();
+
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.vx = (Math.random() - 0.5) * 0.6;
+                        this.vy = (Math.random() - 0.5) * 0.6;
+                        this.radius = Math.random() * 2 + 1;
+                        this.color = Math.random() > 0.5 ? 'rgba(99, 102, 241, ' : 'rgba(139, 92, 246, ';
+                        this.alpha = Math.random() * 0.4 + 0.2;
+                    }
+
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+
+                        if (this.x < 0 || this.x > width) this.vx *= -1;
+                        if (this.y < 0 || this.y > height) this.vy *= -1;
+                    }
+
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = this.color + this.alpha + ')';
+                        ctx.fill();
+                    }
+                }
+
+                class Shockwave {
+                    constructor(x, y) {
+                        this.x = x;
+                        this.y = y;
+                        this.radius = 2;
+                        this.maxRadius = 65;
+                        this.alpha = 1;
+                        this.speed = 2.8;
+                    }
+
+                    update() {
+                        this.radius += this.speed;
+                        this.alpha = 1 - (this.radius / this.maxRadius);
+                    }
+
+                    draw() {
+                        if (this.alpha <= 0) return;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        ctx.strokeStyle = `rgba(16, 185, 129, ${this.alpha})`;
+                        ctx.lineWidth = 2.5;
+                        ctx.stroke();
+                    }
+                }
+
+                class BurstParticle {
+                    constructor(x, y) {
+                        this.x = x;
+                        this.y = y;
+                        const angle = Math.random() * Math.PI * 2;
+                        const speed = Math.random() * 4 + 2;
+                        this.vx = Math.cos(angle) * speed;
+                        this.vy = Math.sin(angle) * speed;
+                        this.radius = Math.random() * 2.5 + 1;
+                        this.life = 1;
+                        this.decay = Math.random() * 0.03 + 0.025;
+                        this.colors = ['#6366F1', '#8B5CF6', '#10B981', '#EC4899', '#60A5FA'];
+                        this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
+                    }
+
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        this.vx *= 0.94;
+                        this.vy *= 0.94;
+                        this.life -= this.decay;
+                    }
+
+                    draw() {
+                        if (this.life <= 0) return;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = this.color;
+                        ctx.globalAlpha = this.life;
+                        ctx.fill();
+                        ctx.globalAlpha = 1;
+                    }
+                }
+
+                for (let i = 0; i < 35; i++) {
+                    particles.push(new Particle());
+                }
+
+                // Trigger Shockwave Burst on Tap/Click
+                window.addEventListener('click', (e) => {
+                    shockwaves.push(new Shockwave(e.clientX, e.clientY));
+                    for (let i = 0; i < 14; i++) {
+                        burstParticles.push(new BurstParticle(e.clientX, e.clientY));
+                    }
+                });
+
+                function animateParticles() {
+                    ctx.clearRect(0, 0, width, height);
+
+                    // Background Particle Network
+                    for (let i = 0; i < particles.length; i++) {
+                        particles[i].update();
+                        particles[i].draw();
+
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+
+                            if (dist < 110) {
+                                ctx.beginPath();
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.strokeStyle = `rgba(139, 92, 246, ${0.12 * (1 - dist / 110)})`;
+                                ctx.lineWidth = 0.8;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+
+                    // Shockwaves
+                    for (let i = shockwaves.length - 1; i >= 0; i--) {
+                        shockwaves[i].update();
+                        shockwaves[i].draw();
+                        if (shockwaves[i].alpha <= 0) {
+                            shockwaves.splice(i, 1);
+                        }
+                    }
+
+                    // Burst Particles
+                    for (let i = burstParticles.length - 1; i >= 0; i--) {
+                        burstParticles[i].update();
+                        burstParticles[i].draw();
+                        if (burstParticles[i].life <= 0) {
+                            burstParticles.splice(i, 1);
+                        }
+                    }
+
+                    requestAnimationFrame(animateParticles);
+                }
+                animateParticles();
+            }
+
+            // 4. Hero Typer Subtitle
+            const roleText = document.getElementById('hero-role-text');
+            if (roleText) {
+                const rolesList = ["Web Developer", "RPL Graduate", "AI-Assisted Tech Explorer"];
+                let rIndex = 0, cIndex = 0, isDeletingRole = false;
+
+                function typeRoleEffect() {
+                    const currentRole = rolesList[rIndex];
+                    if (isDeletingRole) {
+                        roleText.textContent = currentRole.substring(0, cIndex - 1);
+                        cIndex--;
+                    } else {
+                        roleText.textContent = currentRole.substring(0, cIndex + 1);
+                        cIndex++;
+                    }
+
+                    let speed = isDeletingRole ? 40 : 80;
+
+                    if (!isDeletingRole && cIndex === currentRole.length) {
+                        speed = 2000;
+                        isDeletingRole = true;
+                    } else if (isDeletingRole && cIndex === 0) {
+                        isDeletingRole = false;
+                        rIndex = (rIndex + 1) % rolesList.length;
+                        speed = 300;
+                    }
+
+                    setTimeout(typeRoleEffect, speed);
+                }
+                typeRoleEffect();
+            }
+
+            // 5. Scroll Reveal Observer
+            const reveals = document.querySelectorAll('.reveal-element');
+            const revealObserver = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+
+                        entry.target.querySelectorAll('.stat-counter').forEach(counter => {
+                            const targetNum = parseInt(counter.getAttribute('data-target'));
+                            let currentNum = 0;
+                            const step = Math.ceil(targetNum / 40);
+                            const timer = setInterval(() => {
+                                currentNum += step;
+                                if (currentNum >= targetNum) {
+                                    currentNum = targetNum;
+                                    clearInterval(timer);
+                                }
+                                counter.textContent = currentNum;
+                            }, 30);
+                        });
+
+                        entry.target.querySelectorAll('.skill-meter-bar').forEach(bar => {
+                            bar.style.width = bar.getAttribute('data-width');
+                        });
+
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            reveals.forEach(el => revealObserver.observe(el));
+
+            // 6. Project Filtering Logic
+            const filterBtns = document.querySelectorAll('.project-filter-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => {
+                        b.classList.remove('bg-indigo-600', 'text-white');
+                        b.classList.add('text-slate-400');
+                    });
+                    btn.classList.add('bg-indigo-600', 'text-white');
+                    btn.classList.remove('text-slate-400');
+
+                    const filter = btn.getAttribute('data-filter');
+
+                    projectCards.forEach(card => {
+                        const category = card.getAttribute('data-category');
+                        if (filter === 'all' || category === filter) {
+                            card.style.display = 'flex';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, 50);
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(10px)';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+
+            // 7. Project Glass Modal
+            const modal = document.getElementById('project-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDesc = document.getElementById('modal-desc');
+            const modalTech = document.getElementById('modal-tech');
+            const modalUrl = document.getElementById('modal-url');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+
+            document.querySelectorAll('.open-modal-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (modalTitle) modalTitle.textContent = btn.getAttribute('data-title');
+                    if (modalDesc) modalDesc.textContent = btn.getAttribute('data-desc');
+                    if (modalTech) modalTech.textContent = btn.getAttribute('data-tech');
+                    if (modalUrl) modalUrl.setAttribute('href', btn.getAttribute('data-url'));
+
+                    if (modal) {
+                        modal.classList.remove('invisible', 'pointer-events-none');
+                        modal.classList.add('opacity-100', 'active');
+                    }
+                });
+            });
+
+            function closeModal() {
+                if (modal) {
+                    modal.classList.remove('opacity-100', 'active');
+                    setTimeout(() => {
+                        modal.classList.add('invisible', 'pointer-events-none');
+                    }, 300);
+                }
+            }
+
+            if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) closeModal();
+                });
+            }
+
+            // 8. Toast Function & Copy Email
+            const copyBtn = document.getElementById('copy-email-btn');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', () => {
+                    const email = 'irgii6081@gmail.com';
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(email);
+                    } else {
+                        const temp = document.createElement('input');
+                        temp.value = email;
+                        document.body.appendChild(temp);
+                        temp.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(temp);
+                    }
+                    showToast("Email Disalin!", email);
+                });
+            }
+
+            function showToast(title, message) {
+                const container = document.getElementById('toast-container');
+                if (!container) return;
+                const toast = document.createElement('div');
+
+                toast.className = 'glass-card px-5 py-3 rounded-full flex items-center gap-3 shadow-2xl border-emerald-500/40 text-xs text-white pointer-events-auto transform transition-all duration-300 opacity-0 -translate-y-4 bg-slate-950/90';
+                toast.innerHTML = `
+                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div>
+                        <strong class="font-bold text-white block">${title}</strong>
+                        <span class="text-slate-300 font-mono text-[11px]">${message}</span>
+                    </div>
+                `;
+
+                container.appendChild(toast);
+
+                requestAnimationFrame(() => {
+                    toast.classList.remove('opacity-0', '-translate-y-4');
+                });
+
+                setTimeout(() => {
+                    toast.classList.add('opacity-0', '-translate-y-4');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            // 9. Contact Form Handling
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const sender = document.getElementById('form-name').value;
+                    showToast("Pesan Terkirim!", `Terima kasih ${sender}, pesan berhasil dikirim.`);
+                    e.target.reset();
+                });
+            }
+
+            // 10. Mobile Hamburger Menu Toggle Logic
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenuIcon = document.getElementById('mobile-menu-icon');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = mobileMenu.classList.contains('opacity-100');
+                    if (isOpen) {
+                        mobileMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
+                        mobileMenu.classList.add('opacity-0', 'invisible', '-translate-y-2');
+                        if (mobileMenuIcon) mobileMenuIcon.className = 'fa-solid fa-bars text-sm';
+                    } else {
+                        mobileMenu.classList.remove('opacity-0', 'invisible', '-translate-y-2');
+                        mobileMenu.classList.add('opacity-100', 'visible', 'translate-y-0');
+                        if (mobileMenuIcon) mobileMenuIcon.className = 'fa-solid fa-xmark text-sm';
+                    }
+                });
+
+                mobileNavLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
+                        mobileMenu.classList.add('opacity-0', 'invisible', '-translate-y-2');
+                        if (mobileMenuIcon) mobileMenuIcon.className = 'fa-solid fa-bars text-sm';
+                    });
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                        mobileMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
+                        mobileMenu.classList.add('opacity-0', 'invisible', '-translate-y-2');
+                        if (mobileMenuIcon) mobileMenuIcon.className = 'fa-solid fa-bars text-sm';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
